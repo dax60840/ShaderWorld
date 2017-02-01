@@ -1,4 +1,6 @@
-﻿#ifndef FUR_SHADER_HELPER
+﻿// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
+
+#ifndef FUR_SHADER_HELPER
 #define FUR_SHADER_HELPER
 
 struct appdata
@@ -25,10 +27,8 @@ v2f vert(appdata v)
 
 	float3 P = v.vertex + (v.normal * _FurLength * FUR_OFFSET);
 
-	float vGravity = mul(_Gravity, UNITY_MATRIX_MVP);
-	float k = pow(FUR_OFFSET, 3);  // We use the pow function, so that only the tips of the hairs bend
-							  // As layer goes from 0 to 1, so by using pow(..) function is still
-							  // goes form 0 to 1, but it increases faster! exponentially
+	float3 vGravity = mul(unity_WorldToObject, _Gravity);
+	float k = pow(FUR_OFFSET, 3);
 	P = P + vGravity*k;
 
 
@@ -48,8 +48,9 @@ float4 _Color;
 
 fixed4 frag(v2f i) : SV_Target
 {
-	float4 col = tex2D(_MainTex,  i.uv); // Fur Texture - alpha is VERY IMPORTANT!
-	//col.a = col.a + 0.01 / FUR_OFFSET;
+
+	float4 col = tex2D(_FurTex,  i.uv); //+ (disp * FUR_OFFSET)); // Fur Texture - alpha is VERY IMPORTANT!
+	col.a = tex2D(_MainTex, i.uv).a;
 	col *= _Color;
 	return col;
 }
