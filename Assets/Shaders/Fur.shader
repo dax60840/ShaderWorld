@@ -2,7 +2,7 @@
 {
 	Properties 
 	{
-		_UVScale ("uv Scale", Range(0, 10)) = 1
+		_UVScale ("uv Scale", Range(0, 128)) = 1
 		_FurLength ("Fur Length", Range(0, 2)) = 0.5
 		_Color ("Color", Color) = (1,1,1,1)
 		_MainTex ("Noise", 2D) = "white" {}

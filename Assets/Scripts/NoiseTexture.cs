@@ -3,6 +3,7 @@ using System.Collections;
 
 public class NoiseTexture : MonoBehaviour {
 
+    public bool sendTexture;
     public int pixWidth;
     public int pixHeight;
     public float xOrg;
@@ -20,6 +21,10 @@ public class NoiseTexture : MonoBehaviour {
         pix = new Color[noiseTex.width * noiseTex.height];
         rend.material.mainTexture = noiseTex;
         CalcNoise();
+        if (sendTexture)
+        {
+            rend.material.SetTexture("_FurTex", noiseTex);
+        }
     }
 
     void CalcNoise()

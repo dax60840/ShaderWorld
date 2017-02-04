@@ -1,21 +1,16 @@
-﻿Shader "Custom/TiledShader"
+﻿Shader "Custom/FUCKFILTER"
 {
 	Properties
 	{
 		_MainTex ("Texture", 2D) = "white" {}
-		_Tile ("Tile", int) = 2
 	}
 	SubShader
 	{
-		Tags
-		{
-			"Queue" = "Transparent"
-		}
+		// No culling or depth
+		Cull Off ZWrite Off ZTest Always
 
 		Pass
 		{
-			Blend SrcAlpha OneMinusSrcAlpha
-
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
@@ -43,12 +38,11 @@
 			}
 			
 			sampler2D _MainTex;
-			float _Tile;
 
 			fixed4 frag (v2f i) : SV_Target
 			{
-				fixed4 col = tex2D(_MainTex, i.uv * _Tile);
-				col *= fixed4(i.uv.x, i.uv.y, 1, 1);
+				fixed4 col = tex2D(_MainTex, i.uv);
+				col = fixed4(col.r, col.g, col.b, 1);
 				return col;
 			}
 			ENDCG

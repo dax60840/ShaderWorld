@@ -46,10 +46,18 @@ sampler2D _MainTex;
 sampler2D _FurTex;
 float4 _Color;
 
+sampler2D _Disp;
+float _Magnitude;
+float _Speed;
+
 fixed4 frag(v2f i) : SV_Target
 {
+	//Disp
+	float2 distuv = float2(i.uv.x + _Time.x * _Speed, i.uv.y + _Time.x * _Speed);
+	float2 disp = tex2D(_Disp, distuv.xy).xy;
+	disp = ((disp * 2) - 1) * _Magnitude;
 
-	float4 col = tex2D(_FurTex,  i.uv); //+ (disp * FUR_OFFSET)); // Fur Texture - alpha is VERY IMPORTANT!
+	float4 col = tex2D(_FurTex,  i.uv + disp * FUR_OFFSET); // Fur Texture - alpha is VERY IMPORTANT!
 	col.a = tex2D(_MainTex, i.uv).a;
 	col *= _Color;
 	return col;
