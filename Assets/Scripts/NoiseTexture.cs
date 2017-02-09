@@ -10,6 +10,7 @@ public class NoiseTexture : MonoBehaviour {
     public float yOrg;
     public float scale = 1.0F;
     public float ceil = 0;
+    public float rotation = 15;
     private Texture2D noiseTex;
     private Color[] pix;
     private Renderer rend;
@@ -25,6 +26,11 @@ public class NoiseTexture : MonoBehaviour {
         {
             rend.material.SetTexture("_FurTex", noiseTex);
         }
+    }
+
+    void Update()
+    {
+        transform.Rotate(rotation * Time.deltaTime, 0, 0);
     }
 
     void CalcNoise()
